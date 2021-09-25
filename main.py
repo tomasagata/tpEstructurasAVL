@@ -21,6 +21,8 @@ class Node:
             return self.label == other.label
         return False
 
+
+    # Código de debugger SOLO UTILIZADP para imprimir el árbol y verificar compatibilidad. Obtenido de StackOverflow
     def display(self):
         lines, *_ = self._display_aux()
         for line in lines:
@@ -138,7 +140,6 @@ class AVL:
         """
 
 
-
     def search(self, value):
         curr_node = self.root
         found = False
@@ -250,14 +251,16 @@ class AVL:
 
             if aux_parent is not None:
 
-                if n is aux_parent.left:
+                if parent_node == aux_parent.left:
                     aux_parent.left = raizSubArbol
                 
                 else:
                     aux_parent.right = raizSubArbol
             
             else:
+                raizSubArbol.parent = None
                 self.root = raizSubArbol
+                
 
 
             break
@@ -277,7 +280,6 @@ class AVL:
             parent.BF = 0
             right_child.BF = 0
         
-        print(right_child)
         return right_child
 
 
@@ -325,7 +327,7 @@ class AVL:
                 right_child.BF = 1
         
         third_node.BF = 0
-        print(third_node)
+
         return third_node
 
 
@@ -357,7 +359,7 @@ class AVL:
                 left_child.BF = 1
         
         third_node.BF = 0
-        print(third_node)
+
         return third_node
 
     def preShow(self, curr_node):
@@ -372,8 +374,64 @@ class AVL:
             self.preShow(curr_node.right)
             print(curr_node.label)
 
+    def insertFromFile(self, inputFile):
+        file = open(inputFile, "r")
+        lines = file.readlines()
+        file.close()
+
+        for line in lines:
+            line = line[:-1]
+            t.insert(int(line))
+        
+
     def printSelf(self):
         self.root.display()
+
+    def insertCountNPrint(self, inputFile, outputFile):
+
+        # Inserto los elementos desde archivo a través del método implementado anteriormente
+        self.insertFromFile(inputFile)
+
+
+        # Busco todos los nodos hojas e imprimo su altura en el archivo <outputFile>
+        diccionario = {"-1":[], "0": [], "1":[]}
+        hojas = []
+        abierto = [self.root]
+        while len(abierto) > 0 and abierto[0] is not None:
+
+            diccionario[str(abierto[0].BF)].append(abierto[0])
+
+            if abierto[0].left is None and abierto[0].right is None:
+                hojas.append(abierto[0])
+            
+            else:
+
+                if abierto[0].left is not None:
+                    abierto.append(abierto[0].left)
+                
+                if abierto[0].right is not None:
+                    abierto.append(abierto[0].right)
+
+
+            abierto.pop(0)
+
+
+        file = open(outputFile, "w")
+        
+        file.write("Hojas: \n")
+        for hoja in hojas:
+            file.write("  " + str(hoja.label) + ": Nivel " + str(hoja.height) + "\n")
+
+        file.write("\n\nNodos por Factor de balanceo: \n")
+        for factBalan, nodos in diccionario.items():
+            file.write("  \"" + str(factBalan) + "\": \n")
+            for nodo in nodos:
+                file.write("    -> " + str(nodo.label) + "\n")
+            file.write("  Total = " + str(len(nodos)) + "\n\n")
+
+
+
+        file.close()
 
 
 
@@ -389,15 +447,18 @@ if __name__ == '__main__':
     # t.insert(str(500))
     # t.insert(str(500))
 
-    t.insert(10)
-    t.insert(111)
-    t.insert(1123)
-    t.insert(15)
-    t.insert(999)
-    t.insert(20)
-    t.insert(500)
-    t.insert(10)
 
+
+    # t.insert(10)
+    # t.insert(111)
+    # t.insert(1123)
+    # t.insert(15)
+    # t.insert(999)
+    # t.insert(20)
+    # t.insert(500)
+    # t.insert(10)
+    t.insertCountNPrint("temp.csv" , "output.txt")
+    #t.insertFromFile("temp.csv")
 
 
     # t.preShow(t.root)
