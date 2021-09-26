@@ -185,6 +185,7 @@ class AVL:
                         elif node.label > curr_node.label:
                             curr_node = curr_node.right
                         else:
+                            print("El valor: '", node.label, "' no se agregó puesto que ya estaba en el árbol.")
                             return
                     else:
                         if node.label < dad_node.label:
@@ -507,6 +508,11 @@ class AVL:
 
         file.write("\n")
         file.close()
+        if (self.checkIfTreeIsAVL_nonRecursive (self.root) == True):
+            print("Este árbol está balanceado.")
+        else:
+            print("Este árbol no está balanceado.")
+
 
 
 
@@ -514,7 +520,7 @@ if __name__ == '__main__':
     t = AVL()
 
     #Por favor, si se esta ejecutando en otro Sistema Operativo no Linux o MacOS, cambiar el "/" por "\"
-    t.insertCountNPrint("Inputs/prueba_2.txt" , "Outputs/prueba_2_output.txt")
+    t.insertCountNPrint("Inputs/arbolLlenoANivel3.txt" , "Outputs/ArbolLlenoANivel3_output.txt")
 
     #Funcion para debuggear el Árbol
     t.printSelf()
