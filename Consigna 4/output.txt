@@ -1,0 +1,23 @@
+Hojas: 
+  10: Nivel 2
+  999: Nivel 2
+  20: Nivel 3
+
+
+Nodos por Factor de balanceo: 
+  "-1": 
+    -> 111
+    -> 1123
+    -> 70
+  Total = 3
+
+  "0": 
+    -> 10
+    -> 999
+    -> 20
+  Total = 3
+
+  "1": 
+    -> 15
+  Total = 1
+
