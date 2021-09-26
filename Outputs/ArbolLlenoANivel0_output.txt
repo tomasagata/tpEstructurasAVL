@@ -1,0 +1,22 @@
+Hojas: 
+  1: Nivel 0
+
+
+Nodos por Factor de balanceo: 
+  "-2": 
+  Total = 0
+
+  "-1": 
+  Total = 0
+
+  "0": 
+    -> 1
+  Total = 1
+
+  "1": 
+  Total = 0
+
+  "2": 
+  Total = 0
+
+Cantidad de Nodos Totales = 1 = 2^(nivelMax+1) - 1 (Porque es Árbol Completo)

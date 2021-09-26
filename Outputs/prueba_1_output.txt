@@ -1,0 +1,31 @@
+Hojas: 
+  10: Nivel 2
+  20: Nivel 2
+  500: Nivel 2
+  1123: Nivel 2
+
+
+Nodos por Factor de balanceo: 
+  "-2": 
+  Total = 0
+
+  "-1": 
+  Total = 0
+
+  "0": 
+    -> 111
+    -> 15
+    -> 999
+    -> 10
+    -> 20
+    -> 500
+    -> 1123
+  Total = 7
+
+  "1": 
+  Total = 0
+
+  "2": 
+  Total = 0
+
+Cantidad de Nodos Totales = 7 = 2^(nivelMax+1) - 1 (Porque es Árbol Completo)

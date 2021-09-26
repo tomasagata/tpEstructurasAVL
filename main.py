@@ -514,7 +514,7 @@ if __name__ == '__main__':
     t = AVL()
 
     #Por favor, si se esta ejecutando en otro Sistema Operativo no Linux o MacOS, cambiar el "/" por "\"
-    t.insertCountNPrint("Inputs/arbolLlenoANivel3.txt" , "Outputs/ArbolLlenoANivel3_output.txt")
+    t.insertCountNPrint("Inputs/prueba_2.txt" , "Outputs/prueba_2_output.txt")
 
     #Funcion para debuggear el Árbol
     t.printSelf()
