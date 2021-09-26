@@ -22,7 +22,7 @@ class Node:
         return False
 
 
-    # Código de debugger SOLO UTILIZADP para imprimir el árbol y verificar compatibilidad. Obtenido de StackOverflow
+    # Código de debugger SOLO UTILIZADO para imprimir el árbol y verificar compatibilidad. Obtenido de StackOverflow
     def display(self):
         lines, *_ = self._display_aux()
         for line in lines:
@@ -362,6 +362,20 @@ class AVL:
 
         return third_node
 
+    def perLevel(self):
+        abierto = [self.root]
+        while len(abierto) > 0 and abierto[0] is not None:
+
+            if abierto[0].left is not None:
+                abierto.append(abierto[0].left)
+            
+            if abierto[0].right is not None:
+                abierto.append(abierto[0].right)
+
+            print(abierto[0].label)
+
+            abierto.pop(0)
+    
     def preShow(self, curr_node):
         if curr_node is not None:
             self.preShow(curr_node.left)
@@ -387,14 +401,68 @@ class AVL:
     def printSelf(self):
         self.root.display()
 
-    def insertCountNPrint(self, inputFile, outputFile):
+
+    def checkIfTreeIsAVL(self, node):
+
+        if node is not None:
+            
+            if abs(node.BF) > 1:
+                return False
+
+            if not self.checkIfTreeIsAVL(node.left):
+                return False
+            
+            if not self.checkIfTreeIsAVL(node.right):
+                return False
+
+        return True 
+
+    def checkIfTreeIsAVL_nonRecursive(self, node):
+
+        if node is not None:
+            abierto = [node]
+            while len(abierto) > 0:
+
+                if abs(abierto[0].BF) > 1:
+                    return False
+
+                if abierto[0].left is not None:
+                    abierto.append(abierto[0].left)
+                
+                if abierto[0].right is not None:
+                    abierto.append(abierto[0].right)
+
+                abierto.pop(0)
+        
+        return True
+            
+    def checkIfTreeIsComplete(self, node):
+    
+        if node is not None:
+            abierto = [node]
+            while len(abierto) > 0:
+
+                if abs(abierto[0].BF) > 0:
+                    return False
+
+                if abierto[0].left is not None:
+                    abierto.append(abierto[0].left)
+                
+                if abierto[0].right is not None:
+                    abierto.append(abierto[0].right)
+
+                abierto.pop(0)
+        
+        return True
+
+    def insertCountNPrint(self, inputFile, outputFile): 
 
         # Inserto los elementos desde archivo a través del método implementado anteriormente
         self.insertFromFile(inputFile)
 
 
         # Busco todos los nodos hojas e imprimo su altura en el archivo <outputFile>
-        diccionario = {"-1":[], "0": [], "1":[]}
+        diccionario = {"-2":[], "-1":[], "0": [], "1":[], "2": []}
         hojas = []
         abierto = [self.root]
         while len(abierto) > 0 and abierto[0] is not None:
@@ -423,43 +491,30 @@ class AVL:
             file.write("  " + str(hoja.label) + ": Nivel " + str(hoja.height) + "\n")
 
         file.write("\n\nNodos por Factor de balanceo: \n")
+        suma = 0
+
         for factBalan, nodos in diccionario.items():
             file.write("  \"" + str(factBalan) + "\": \n")
             for nodo in nodos:
                 file.write("    -> " + str(nodo.label) + "\n")
+                suma+=1
             file.write("  Total = " + str(len(nodos)) + "\n\n")
 
+        file.write("Cantidad de Nodos Totales = " + str(suma) )
 
+        if self.checkIfTreeIsComplete(self.root):
+            file.write(" = 2^(nivelMax+1) - 1 (Porque es Árbol Completo)")
 
+        file.write("\n")
         file.close()
 
 
 
 if __name__ == '__main__':
     t = AVL()
-    # t.insert(str(111))
-    # t.insert(str(1123))
-    # t.insert(str(10))
-    # t.insert(str(15))
-    # t.insert(str(10))
-    # t.insert(str(999))
-    # t.insert(str(20))
-    # t.insert(str(500))
-    # t.insert(str(500))
 
+    #Por favor, si se esta ejecutando en otro Sistema Operativo no Linux o MacOS, cambiar el "/" por "\"
+    t.insertCountNPrint("Inputs/arbolLlenoANivel3.txt" , "Outputs/ArbolLlenoANivel3_output.txt")
 
-
-    # t.insert(10)
-    # t.insert(111)
-    # t.insert(1123)
-    # t.insert(15)
-    # t.insert(999)
-    # t.insert(20)
-    # t.insert(500)
-    # t.insert(10)
-    t.insertCountNPrint("temp.csv" , "output.txt")
-    #t.insertFromFile("temp.csv")
-
-
-    # t.preShow(t.root)
+    #Funcion para debuggear el Árbol
     t.printSelf()
