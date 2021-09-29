@@ -8,6 +8,8 @@ from __future__ import print_function
 Declaramos la clase "Node", con cada una de sus propiedades.
 """
 class Node:
+    
+    #Constructor de los nodos, donde se le asignan un valor, su Factor de Balanceo(BF) y la referencia a su padre, hijoIzq e HijoDer
     def __init__(self, label):
         self.label = label
         self._parent = None
@@ -16,67 +18,17 @@ class Node:
         self._height = 0
         self.BF = 0
 
+    #Metodo para comparar 2 objetos <Nodo>
     def __eq__(self, other):
         if isinstance(other, Node):
             return self.label == other.label
         return False
 
-
-    # Código de debugger SOLO UTILIZADO para imprimir el árbol y verificar compatibilidad. Obtenido de StackOverflow
-    def display(self):
-        lines, *_ = self._display_aux()
-        for line in lines:
-            print(line)
-
-    def _display_aux(self):
-        """Returns list of strings, width, height, and horizontal coordinate of the root."""
-        # No child.
-        if self.right is None and self.left is None:
-            line = '%s' % self.label
-            width = len(line)
-            height = 1
-            middle = width // 2
-            return [line], width, height, middle
-
-        # Only left child.
-        if self.right is None:
-            lines, n, p, x = self.left._display_aux()
-            s = '%s' % self.label
-            u = len(s)
-            first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
-            second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
-            shifted_lines = [line + u * ' ' for line in lines]
-            return [first_line, second_line] + shifted_lines, n + u, p + 2, n + u // 2
-
-        # Only right child.
-        if self.left is None:
-            lines, n, p, x = self.right._display_aux()
-            s = '%s' % self.label
-            u = len(s)
-            first_line = s + x * '_' + (n - x) * ' '
-            second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
-            shifted_lines = [u * ' ' + line for line in lines]
-            return [first_line, second_line] + shifted_lines, n + u, p + 2, u // 2
-
-        # Two children.
-        left, n, p, x = self.left._display_aux()
-        right, m, q, y = self.right._display_aux()
-        s = '%s' % self.label
-        u = len(s)
-        first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
-        second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
-        if p < q:
-            left += [n * ' '] * (q - p)
-        elif q < p:
-            right += [m * ' '] * (p - q)
-        zipped_lines = zip(left, right)
-        lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
-        return lines, n + m + u, max(p, q) + 2, n + u // 2
-
     @property
     def right(self):
         return self._right
 
+    #Al settear un hijo, el hijo debe referenciar al padre tambien
     @right.setter
     def right(self, node):
         self._right = node
@@ -99,6 +51,7 @@ class Node:
     def parent(self):
         return self._parent
 
+    #Al settear el padre, tiene que settearse la altura del padre +1
     @parent.setter
     def parent(self, node):
         self._parent = node
@@ -112,6 +65,7 @@ class Node:
     def height(self):
         return self._height
 
+    #Al settearse la altura, tiene que settearle la alturas a sus hijos tambien
     @height.setter
     def height(self, value):
 
@@ -132,7 +86,6 @@ class AVL:
 
     def __init__(self):
         self.root = None
-        self.size = 0
 
         """
         Operación de inserción para agregar nuevos nodos
@@ -140,6 +93,8 @@ class AVL:
         """
 
 
+    #Descripto en pseudocódigo
+    
     def search(self, value):
         curr_node = self.root
         found = False
@@ -161,7 +116,10 @@ class AVL:
             
         return found
 
-
+    
+    
+    #Descripto en pseudocódigo
+    
     def insert(self, value):
         node = Node(value)
 
@@ -170,7 +128,6 @@ class AVL:
             if self.root is None:
                 self.root = node
                 self.root.parent = None
-                self.size = 1
             else:
                 curr_node = self.root
                 dad_node = None
@@ -194,11 +151,11 @@ class AVL:
                             dad_node.right = node
 
                         self.rebalance(node)
-                        self.size += 1
                         break
 
 
-    # Operación de rotación
+    # Operación de chequeo por rotación
+    
     def rebalance(self, node):
         n = node
         parent_node = node.parent
@@ -376,18 +333,7 @@ class AVL:
             print(abierto[0].label)
 
             abierto.pop(0)
-    
-    def preShow(self, curr_node):
-        if curr_node is not None:
-            self.preShow(curr_node.left)
-            print(curr_node.label)
-            self.preShow(curr_node.right)
 
-    def preorder(self, curr_node):
-        if curr_node is not None:
-            self.preShow(curr_node.left)
-            self.preShow(curr_node.right)
-            print(curr_node.label)
 
     def insertFromFile(self, inputFile):
         file = open(inputFile, "r")
@@ -398,9 +344,6 @@ class AVL:
             line = line[:-1]
             t.insert(int(line))
         
-
-    def printSelf(self):
-        self.root.display()
 
 
     def checkIfTreeIsAVL(self, node):
@@ -521,6 +464,6 @@ if __name__ == '__main__':
 
     #Por favor, si se esta ejecutando en otro Sistema Operativo no Linux o MacOS, cambiar el "/" por "\"
     t.insertCountNPrint("Inputs/arbolLlenoANivel3.txt" , "Outputs/ArbolLlenoANivel3_output.txt")
-
-    #Funcion para debuggear el Árbol
-    t.printSelf()
+    
+    #imprimo los nodos por nivel
+    t.perLevel()
