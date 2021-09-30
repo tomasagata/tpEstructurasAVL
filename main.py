@@ -333,7 +333,12 @@ class AVL:
             print(abierto[0].label)
 
             abierto.pop(0)
-
+    
+    
+    '''
+    Codigo para insertar numeros (estrictamente numeros) desde archivo, puesto que queda más claro el orden con numeros.
+    Se presupone un archivo bien armado, con un numero por linea y terminador de linea '\n'
+    '''
 
     def insertFromFile(self, inputFile):
         file = open(inputFile, "r")
